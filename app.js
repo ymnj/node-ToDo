@@ -24,6 +24,9 @@ mongoose.connect(config.getDbConnectionString());
 var setupController = require('./controllers/setupController');
 setupController(app);
 
+//Controllers
+var apiController = require('./controllers/apiController');
+apiController(app);
 
 
 app.listen(port);
