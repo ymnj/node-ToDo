@@ -21,11 +21,11 @@ app.get('/', function(req, res){
 mongoose.connect(config.getDbConnectionString());
 
 //SEED
-var setupController = require('./controllers/setupController');
+var setupController = require('./app/controllers/setupController');
 setupController(app);
 
 //Controllers
-var apiController = require('./controllers/apiController');
+var apiController = require('./app/controllers/apiController');
 apiController(app);
 
 
