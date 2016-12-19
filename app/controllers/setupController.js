@@ -1,24 +1,24 @@
 var Todos = require('../models/todoModel');
 
 module.exports = function(app){
-  app.get('/api/todos', function(req, res){
+  app.get('/api/setupTodos', function(req, res){
 
       // seed database
       var starterTodos = [
         {
-          username: 'Tom',
+          username: 'test',
           todo: 'Buy milk',
           isDone: false,
           hasAttachment: false
         },
         {
-          username: 'Sharon',
+          username: 'test',
           todo: 'Wash car',
           isDone: false,
           hasAttachment: false
         },
         {
-          username: 'Jake',
+          username: 'test',
           todo: 'Go to the gym',
           isDone: false,
           hasAttachment: false

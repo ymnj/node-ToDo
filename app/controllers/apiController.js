@@ -37,7 +37,7 @@ module.exports = function(app){
         res.send('Update Success');
       })
     } else {
-      var newTodo = Todo({
+      var newTodo = Todos({
         username: 'test',
         todo: req.body.todo,
         isDone: req.body.isDone,

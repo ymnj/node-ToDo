@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var todoSchema = new Schema({
   username: String,
-  task: String,
+  todo: String,
   isDone: Boolean,
   hasAttachment: Boolean
 });

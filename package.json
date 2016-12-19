@@ -16,13 +16,11 @@
     "url": "https://github.com/ymnj/plans/issues"
   },
   "homepage": "https://github.com/ymnj/plans#readme",
-  "devDependencies": {
+  "dependencies": {
+    "mongodb": "^2.2.16",
     "body-parser": "^1.15.2",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "mongoose": "^4.7.2"
-  },
-  "dependencies": {
-    "mongodb": "^2.2.16"
   }
 }
