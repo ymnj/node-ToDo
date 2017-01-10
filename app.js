@@ -18,6 +18,7 @@ app.get('/', function(req, res){
 
 
 //Database Connections
+mongoose.Promise = global.Promise;
 mongoose.connect(config.getDbConnectionString());
 
 //SEED
