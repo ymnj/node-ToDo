@@ -1,32 +1,43 @@
-var Todos = require('../models/todoModel');
+var Todo = require('../models/todoModel');
+var User = require('../models/userModel');
 
 module.exports = function(app){
-  app.get('/api/setupTodos', function(req, res){
+  app.get('/api/setupTodo', function(req, res){
+      
+    // seed database
+    var newTodo = new Todo({
+      title: 'Study',
+      description: 'a',
+      completedAt: 12
+    });
 
-      // seed database
-      var starterTodos = [
-        {
-          username: 'test',
-          todo: 'Buy milk',
-          isDone: false,
-          hasAttachment: false
-        },
-        {
-          username: 'test',
-          todo: 'Wash car',
-          isDone: false,
-          hasAttachment: false
-        },
-        {
-          username: 'test',
-          todo: 'Go to the gym',
-          isDone: false,
-          hasAttachment: false
-        }
-      ]
+    newTodo.save().then((doc) => {
+      console.log('Successfully Saved')
+      res.send(doc)
+    }).catch((err) => {
+      console.log('unable to save');
+      res.send(err.errors.description.message);
+    })
 
-      Todos.create(starterTodos, function(err, results){
-        res.send(results);  
-      });
+  });
+
+  app.get('/api/setupUser', (req, res) => {
+
+    var newUser = new User({
+      userName: 'TommiDummi',
+      firstName: 'Tom',
+      lastName: 'Hung',
+      email: 'tom@tomhung.ca'
+    });
+
+    newUser.save().then((doc) => {
+      console.log('User saved');
+      res.send(doc)
+    }).catch((err) => {
+      console.log('Unable to save user');
+      console.log(JSON.stringify(err, undefined, 2));
+      res.send(err);
+    });
+
   });
 };
