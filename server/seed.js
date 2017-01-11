@@ -1,13 +1,13 @@
-var Todo = require('../models/todoModel');
-var User = require('../models/userModel');
+var Todo = require('../app/models/todoModel');
+var User = require('../app/models/userModel');
 
 module.exports = function(app){
-  app.get('/api/setupTodo', function(req, res){
+  app.get('/api/seedTodo', function(req, res){
       
     // seed database
     var newTodo = new Todo({
-      title: 'Study',
-      description: 'a',
+      title: 'Study Code',
+      description: 'aasdasdas',
       completedAt: 12
     });
 
@@ -21,7 +21,7 @@ module.exports = function(app){
 
   });
 
-  app.get('/api/setupUser', (req, res) => {
+  app.get('/api/seedUser', (req, res) => {
 
     var newUser = new User({
       userName: 'TommiDummi',
@@ -35,7 +35,6 @@ module.exports = function(app){
       res.send(doc)
     }).catch((err) => {
       console.log('Unable to save user');
-      console.log(JSON.stringify(err, undefined, 2));
       res.send(err);
     });
 

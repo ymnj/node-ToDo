@@ -9,34 +9,33 @@ module.exports = (app) => {
 
   //CREATE
   app.post('/todos', (req, res) => {
-    console.log(req.body);
-    // if(req.body.id){
-    //   //Has an ID so it's a new todo
-    //   todos.findByIdAndUpdate(req.body.id, {
-    //     title: req.body.title,
-    //     description: req.body.description,
-    //     isDone: req.body.isDone,
-    //     hasAttachment: req.body.hasAttachment,
-    //     completedAt: req.body.completedAt
-    //   }, function(err, todo){
-    //     if(err) throw err;
+    if(req.body.id){
+      //Has an ID so it's a new todo
+      todos.findByIdAndUpdate(req.body.id, {
+        title: req.body.title,
+        description: req.body.description,
+        isDone: req.body.isDone,
+        hasAttachment: req.body.hasAttachment,
+        completedAt: req.body.completedAt
+      }, function(err, todo){
+        if(err) throw err;
 
-    //     res.send('Update Success');
-    //   })
-    // } else {
-    //   var newTodo = todos({
-    //     title: req.body.title,
-    //     description: req.body.description,
-    //     isDone: req.body.isDone,
-    //     hasAttachment: req.body.hasAttachment,
-    //     completedAt: req.body.completedAt
-    //   });
-    //   newTodo.save(function(err){
-    //     if(err) throw err;
+        res.send('Update Success');
+      })
+    } else {
+      var newTodo = todos({
+        title: req.body.title,
+        description: req.body.description,
+        isDone: req.body.isDone,
+        hasAttachment: req.body.hasAttachment,
+        completedAt: req.body.completedAt
+      });
+      newTodo.save(function(err){
+        if(err) throw err;
 
-    //     res.send("New todo saved");
-    //   });
-    // }
+        res.send("New todo saved");
+      });
+    }
   })
 
   //READ

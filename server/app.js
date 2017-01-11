@@ -22,14 +22,14 @@ mongoose.Promise = global.Promise;
 mongoose.connect(db.getDbConnectionString());
 
 //SEED
-var setupController = require('../app/controllers/setupController');
-setupController(app);
+var seedController = require('./seed');
+seedController(app);
 
 //Controllers
-// var apiController = require('../app/controllers/apiController');
-// apiController(app);
 var todosController = require('../app/controllers/todosController');
 todosController(app);
+var usersController = require('../app/controllers/usersController');
+usersController(app);
 
 
 app.listen(port);
