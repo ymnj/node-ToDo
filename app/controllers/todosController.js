@@ -9,34 +9,20 @@ module.exports = (app) => {
 
   //CREATE
   app.post('/todos', (req, res) => {
-    if(req.body.id){
-      //Has an ID so it's a new todo
-      todos.findByIdAndUpdate(req.body.id, {
-        title: req.body.title,
-        description: req.body.description,
-        isDone: req.body.isDone,
-        hasAttachment: req.body.hasAttachment,
-        completedAt: req.body.completedAt
-      }, function(err, todo){
-        if(err) throw err;
-
-        res.send('Update Success');
-      })
-    } else {
-      var newTodo = todos({
-        title: req.body.title,
-        description: req.body.description,
-        isDone: req.body.isDone,
-        hasAttachment: req.body.hasAttachment,
-        completedAt: req.body.completedAt
-      });
-      newTodo.save(function(err){
-        if(err) throw err;
-
-        res.send("New todo saved");
-      });
-    }
-  })
+    
+    var newTodo = todos({
+      title: req.body.title
+      // description: req.body.description,
+      // isDone: req.body.isDone,
+      // hasAttachment: req.body.hasAttachment,
+      // completedAt: req.body.completedAt
+    });
+    newTodo.save().then((doc) => {
+      res.send(doc);
+    }).catch((err) => {
+      res.status(400).send(err);
+    });
+  });
 
   //READ
   app.get('/todos', (req, res) => {
@@ -45,7 +31,7 @@ module.exports = (app) => {
 
       res.send(todos);
     })
-  })
+  });
 
   app.get('/todo/:id', function(req, res){
 
@@ -61,6 +47,4 @@ module.exports = (app) => {
 
 
   //DELETE
-
-
 }

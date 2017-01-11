@@ -31,5 +31,6 @@ todosController(app);
 var usersController = require('../app/controllers/usersController');
 usersController(app);
 
-
 app.listen(port);
+
+module.exports = app;

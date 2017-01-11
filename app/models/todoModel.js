@@ -11,7 +11,7 @@ var todoSchema = new Schema({
   },
   description: {
     type: String,
-    required: [true, "A description must be minimum 5 characters"],
+    // required: [true, "A description must be minimum 5 characters"],
     minlength: 5,
     trim: true
   },
