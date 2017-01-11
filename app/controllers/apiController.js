@@ -37,9 +37,11 @@ module.exports = function(app){
     if(req.body.id){
       //Has an ID so it's a new todo
       Todos.findByIdAndUpdate(req.body.id, {
-        todo: req.body.todo,
+        title: req.body.title,
+        description: req.body.description,
         isDone: req.body.isDone,
-        hasAttachment: req.body.hasAttachment
+        hasAttachment: req.body.hasAttachment,
+        completedAt: req.body.completedAt
       }, function(err, todo){
         if(err) throw err;
 
@@ -47,10 +49,11 @@ module.exports = function(app){
       })
     } else {
       var newTodo = Todos({
-        username: 'test',
-        todo: req.body.todo,
+        title: req.body.title,
+        description: req.body.description,
         isDone: req.body.isDone,
-        hasAttachment: req.body.hasAttachment
+        hasAttachment: req.body.hasAttachment,
+        completedAt: req.body.completedAt
       });
       newTodo.save(function(err){
         if(err) throw err;

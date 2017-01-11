@@ -26,8 +26,8 @@ var setupController = require('../app/controllers/setupController');
 setupController(app);
 
 //Controllers
-var apiController = require('../app/controllers/apiController');
-apiController(app);
+// var apiController = require('../app/controllers/apiController');
+// apiController(app);
 var todosController = require('../app/controllers/todosController');
 todosController(app);
 
