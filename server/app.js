@@ -6,16 +6,21 @@ var db = require('./db');
 
 var port = process.env.PORT || 3000;
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 //Public files
 app.use('/assets', express.static(__dirname + '/public'));
 
 //View Engine
 app.set('view engine', 'ejs');
 
+
+//Root
 app.get('/', function(req, res){
   res.send('hello');
 })
-
 
 //Database Connections
 mongoose.Promise = global.Promise;

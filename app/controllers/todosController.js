@@ -1,11 +1,6 @@
 var todos = require('../models/todoModel');
-var bodyParser = require('body-parser');
 
 module.exports = (app) => {
-
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-
 
   //CREATE
   app.post('/todos', (req, res) => {

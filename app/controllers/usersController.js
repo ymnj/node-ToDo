@@ -1,12 +1,17 @@
 var users = require('../models/userModel');
-var bodyParser = require('body-parser');
 
 module.exports = (app) => {
 
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  //READ
+  app.get('/users', (req, res) => {
+    users.find({}, (err, users) => {
+      if(err) throw error;
 
-  //GET
+      res.status(200)
+        .send(users);
+    });
+
+  })
 
   //POST
 
