@@ -2,7 +2,7 @@ var Todo = require('../app/models/todoModel');
 var User = require('../app/models/userModel');
 
 module.exports = function(app){
-  app.get('/api/seedTodo', function(req, res){
+  app.get('/api/seedtodos', function(req, res){
       
     // seed database
     var newTodo = new Todo({
@@ -21,10 +21,10 @@ module.exports = function(app){
 
   });
 
-  app.get('/api/seedUser', (req, res) => {
+  app.get('/api/seedusers', (req, res) => {
 
     var newUser = new User({
-      userName: 'TommiDummi',
+      userName: 'TestTest',
       firstName: 'Tom',
       lastName: 'Hung',
       email: 'tom@tomhung.ca'

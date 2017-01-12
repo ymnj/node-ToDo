@@ -1,8 +1,19 @@
 var todos = require('../models/todoModel');
 
 module.exports = (app) => {
+  
+  //GET
+  app.get('/todos', (req, res) => {
+    todos.find().then((todos) => {
+      res.send({
+        todos
+      })
+    }).catch((err) => {
+      res.status(400).send(err);
+    })
+  });
 
-  //CREATE
+  //POST
   app.post('/todos', (req, res) => {
     
     var newTodo = todos({
@@ -19,14 +30,6 @@ module.exports = (app) => {
     });
   });
 
-  //READ
-  app.get('/todos', (req, res) => {
-    todos.find({}, function(err, todos){
-      if(err) throw err;
-
-      res.send(todos);
-    })
-  });
 
   app.get('/todo/:id', function(req, res){
 

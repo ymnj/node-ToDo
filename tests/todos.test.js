@@ -12,56 +12,79 @@ beforeEach((done) => {
   })
 });
 
+describe('/todos', () => {
 
-describe('POST /todos', () => {
+  describe('GET todos', () => {
 
-  it('should create one new todo', (done) => {
-    var title = 'Trade';
-
-    request(app)
-      .post('/todos')
-      .send({
-        title
-      })
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.title).toBe(title)
-      })
-      .end((err, res) => {
-        if(err){
-          return done(err);
-        }
-
-        Todo.find().then((todos) => {
-          expect(todos.length).toBe(1);
-          expect(todos[0].title).toBe(title);
-          done();
-        }).catch((err) => {
-          done(err);
+    it('should retrieve all todos', (done) => {
+      request(app)
+        .get('/todos')
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toBeA('object')
         })
-      });
-  });
+        .end(done)
+    })
+  }) //End GET
 
-  it('should not create todo with invalid body data', (done) => {
+  describe('POST todos', () => {
 
-    request(app)
-      .post('/todos')
-      .send({})
-      .expect(400)
-      .end((err, res) => {
-        if(err){
-          return done(err);
-        }
+    it('should create one new todo', (done) => {
+      var title = 'Trade';
 
-        Todo.find({}).then((todos) => {
-          expect(todos.length).toBe(0)
-          done();
-        }).catch((err) => {
-          done(err);
+      request(app)
+        .post('/todos')
+        .send({
+          title
         })
-      })
-  })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.title).toBe(title)
+        })
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
 
-});
+          Todo.find().then((todos) => {
+            expect(todos.length).toBe(1);
+            expect(todos[0].title).toBe(title);
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        });
+    });
+
+    it('should not create todo with invalid body data', (done) => {
+
+      request(app)
+        .post('/todos')
+        .send({})
+        .expect(400)
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+
+          Todo.find({}).then((todos) => {
+            expect(todos.length).toBe(0)
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        })
+    })
+  }); //End POST
+
+}); //END TODO describe
+
+
+
+
+
+
+
+
 
 

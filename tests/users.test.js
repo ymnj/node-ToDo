@@ -6,44 +6,56 @@ const User = require('../app/models/userModel');
 
 
 //Run before each test case to setup our data environment
-// beforeEach((done) => {
-//   User.remove({}).then(() => {
-//     done();
-//   })
-// });
-
+beforeEach((done) => {
+  User.remove({}).then(() => {
+    done();
+  })
+});
 
 describe('/users', () => {
 
-  describe('GET index', () => {
+  describe('GET users', () => {
 
     it('should get an array of all users from database', (done) => {
       request(app)
         .get('/users')
         .expect(200)
         .expect((res) => {
-          expect(res.body).toBeA('array')
-          expect(res.body[0]).toInclude({
-            userName: "TomMi"
-          })
+          expect(res.body).toBeA('object')
         })
-        .end((err, res) => {
-          if(err) throw error
-
-          User.find().then((docs) => {
-            console.log(docs.length)
-          })
-        });
+        .end(done);
     })
+  })// End GET
 
+  describe('POST users', () => {
 
+    it('should create a new user', (done) => {
+    var userName = 'TestTest';
 
+    request(app)
+      .post('/users')
+      .send({userName})
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.userName).toBe('TestTest')
+      })
+      .end((err, res) => {
+        if(err){
+          return done(err)
+        }
 
+        User.find().then((users) => {
+          expect(users.length).toBe(1);
+          expect(users[0].userName).toBe(userName);
+          done();
+        }).catch((err) => {
+          done(err)
+        });
+      })
+    })
+  })// End POST
 
-
-  })
-  
-})
+}) // End describe
 
 
 

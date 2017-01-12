@@ -36,6 +36,8 @@ todosController(app);
 var usersController = require('../app/controllers/usersController');
 usersController(app);
 
-app.listen(port);
+app.listen(port, () => {
+  console.log(`Server started. Listening on ${port}`)
+});
 
 module.exports = app;
