@@ -17,11 +17,11 @@ module.exports = (app) => {
   app.post('/todos', (req, res) => {
     
     var newTodo = todos({
-      title: req.body.title
-      // description: req.body.description,
-      // isDone: req.body.isDone,
-      // hasAttachment: req.body.hasAttachment,
-      // completedAt: req.body.completedAt
+      title: req.body.title,
+      description: req.body.description,
+      isDone: req.body.isDone,
+      hasAttachment: req.body.hasAttachment,
+      completedAt: req.body.completedAt
     });
     newTodo.save().then((doc) => {
       res.send(doc);
