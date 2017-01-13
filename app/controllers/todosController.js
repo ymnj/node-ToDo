@@ -23,8 +23,8 @@ module.exports = (app) => {
       hasAttachment: req.body.hasAttachment,
       completedAt: req.body.completedAt
     });
-    newTodo.save().then((doc) => {
-      res.send(doc);
+    newTodo.save().then((todo) => {
+      res.send(todo);
     }).catch((err) => {
       res.status(400).send(err);
     });

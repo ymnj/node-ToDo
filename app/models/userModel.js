@@ -7,26 +7,25 @@ var userSchema = new Schema({
     required: true,
     trim: true,
     minlength: 2
+  },
+  firstName: { 
+    type: String,
+    required: true,
+    trim: true,
+    minlength: [2, "Last name must be minimum 2 characters"]
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: [2, "Last name must be minimum 2 characters"]
+  },
+  email: {
+    type: String,
+    required: true,
+    minlength: [5, "Email must be minimum 5 characters"],
+    trim: true
   }
-  //,
-  // firstName: { 
-  //   type: String,
-  //   require: [true, "First name must be minimum 2 characters"],
-  //   trim: true,
-  //   minlength: 2
-  // },
-  // lastName: {
-  //   type: String,
-  //   require: [true, "Last name must be minimum 2 characters"],
-  //   trim: true,
-  //   minlength: 2
-  // },
-  // email: {
-  //   type: String,
-  //   required: [true, "Email must be valid"],
-  //   minlength: 5,
-  //   trim: true
-  // }
 });
 
 var User = mongoose.model('User', userSchema);

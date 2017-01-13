@@ -32,14 +32,19 @@ describe('/users', () => {
   describe('POST users', () => {
 
     it('should create a new user', (done) => {
-    var userName = 'TestTest';
+    var testUser = {
+      userName: "testUser",
+      firstName: "test",
+      lastName: "user",
+      email: "testuser@test.ca"
+    }
 
     request(app)
       .post('/users')
-      .send({userName})
+      .send(testUser)
       .expect(200)
       .expect((res) => {
-        expect(res.body.userName).toBe('TestTest')
+        expect(res.body.userName).toBe(testUser.userName)
       })
       .end((err, res) => {
         if(err){
@@ -48,7 +53,7 @@ describe('/users', () => {
 
         User.find().then((users) => {
           expect(users.length).toBe(1);
-          expect(users[0].userName).toBe(userName);
+          expect(users[0].userName).toBe(testUser.userName);
           done();
         }).catch((err) => {
           done(err)

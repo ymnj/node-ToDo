@@ -17,7 +17,10 @@ module.exports = (app) => {
   app.post('/users', (req, res) => {
 
     var newUser = users({
-      userName: req.body.userName
+      userName: req.body.userName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email
     });
 
     newUser.save().then((user) => {
