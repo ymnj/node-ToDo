@@ -1,4 +1,5 @@
 var users = require('../models/userModel');
+var {ObjectID} = require('mongodb');
 
 module.exports = (app) => {
 
@@ -12,6 +13,27 @@ module.exports = (app) => {
     });
 
   })
+
+
+  app.get('/user/:id', (req, res) => {
+
+    if(!ObjectID.isValid(req.params.id)){
+      return res.status(400).send();
+    }
+
+    users.findById({
+      _id: req.params.id
+    }).then((user) => {
+      if(!user){
+        res.status(404).send()
+      }
+      res.send({user})
+    }).catch((err) => {
+      res.status(404).send()
+    })
+
+  })
+
 
   //POST
   app.post('/users', (req, res) => {
