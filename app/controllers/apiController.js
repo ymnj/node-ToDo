@@ -1,5 +1,5 @@
-var Todos = require('../models/todoModel');
-var bodyParser = require('body-parser');
+let Todos = require('../models/todoModel');
+let bodyParser = require('body-parser');
 
 module.exports = function(app){
 
@@ -48,7 +48,7 @@ module.exports = function(app){
         res.send('Update Success');
       })
     } else {
-      var newTodo = Todos({
+      let newTodo = Todos({
         title: req.body.title,
         description: req.body.description,
         isDone: req.body.isDone,

@@ -1,8 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var Schema = mongoose.Schema;
-
-var todoSchema = new Schema({
+let todoSchema = new Schema({
   title: {
     type: String,
     required: [true, "Must include a title"],
@@ -29,6 +28,6 @@ var todoSchema = new Schema({
   }
 });
 
-var Todo = mongoose.model('ToDo', todoSchema);
+let Todo = mongoose.model('ToDo', todoSchema);
 
 module.exports = Todo;

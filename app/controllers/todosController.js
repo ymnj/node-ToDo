@@ -1,5 +1,5 @@
-var todos = require('../models/todoModel');
-var {ObjectID} = require('mongodb');
+const todos = require('../models/todoModel');
+const {ObjectID} = require('mongodb');
 
 module.exports = (app) => {
   
@@ -14,10 +14,11 @@ module.exports = (app) => {
     })
   });
 
+
   app.get('/todo/:id', function(req, res){
 
     if(!ObjectID.isValid(req.params.id)){
-      return res.status(400).send();
+      return res.status(404).send();
     }
  
     todos.findById({
@@ -28,15 +29,16 @@ module.exports = (app) => {
       }
       res.send({todo})
     }).catch((err) => {
-      res.status(404).send()
+      res.status(400).send()
     });
   });
+
 
 
   //POST
   app.post('/todos', (req, res) => {
     
-    var newTodo = todos({
+    let newTodo = todos({
       title: req.body.title,
       description: req.body.description,
       isDone: req.body.isDone,
@@ -49,7 +51,6 @@ module.exports = (app) => {
       res.status(400).send(err);
     });
   });
-
 
 
   //UPDATE

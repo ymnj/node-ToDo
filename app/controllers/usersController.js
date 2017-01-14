@@ -1,5 +1,5 @@
-var users = require('../models/userModel');
-var {ObjectID} = require('mongodb');
+const users = require('../models/userModel');
+const {ObjectID} = require('mongodb');
 
 module.exports = (app) => {
 
@@ -18,7 +18,7 @@ module.exports = (app) => {
   app.get('/user/:id', (req, res) => {
 
     if(!ObjectID.isValid(req.params.id)){
-      return res.status(400).send();
+      return res.status(404).send();
     }
 
     users.findById({
@@ -29,7 +29,7 @@ module.exports = (app) => {
       }
       res.send({user})
     }).catch((err) => {
-      res.status(404).send()
+      res.status(400).send()
     })
 
   })
@@ -38,7 +38,7 @@ module.exports = (app) => {
   //POST
   app.post('/users', (req, res) => {
 
-    var newUser = users({
+    let newUser = users({
       userName: req.body.userName,
       firstName: req.body.firstName,
       lastName: req.body.lastName,

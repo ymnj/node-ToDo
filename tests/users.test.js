@@ -14,7 +14,7 @@ beforeEach((done) => {
   })
 });
 
-describe('/users', () => {
+describe('USERS', () => {
 
   describe('GET users', () => {
 
