@@ -56,7 +56,7 @@ module.exports = (app) => {
 
   //UPDATE
 
-  //DELETE
+  /* ------------ DELETE ------------ */
   app.delete('/todos/:id', (req, res) => {
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();

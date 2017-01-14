@@ -55,5 +55,23 @@ module.exports = (app) => {
     })
   });
 
+  /* ------------ DELETE ------------ */
+
+  app.delete('/users/:id', (req, res) => {
+    if(!ObjectID.isValid(req.params.id)){
+      return res.status(404).send();
+    }
+
+    User.findByIdAndRemove(req.params.id).then((user) => {
+      if(!user){
+        return req.status(404).send();
+      }
+
+      res.send({user})
+    }).catch((err) => {
+      res.status(400).send(err);
+    })
+
+  })
 
 }
