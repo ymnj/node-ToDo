@@ -36,7 +36,7 @@ module.exports = (app) => {
 
 
   //POST
-  app.post('/todos', (req, res) => {
+  app.post('/todo', (req, res) => {
     
     let newTodo = todos({
       title: req.body.title,

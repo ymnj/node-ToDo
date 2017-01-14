@@ -5,7 +5,7 @@ const {ObjectID} = require('mongodb');
 const app = require('../server/app');
 const Todo = require('../app/models/todoModel');
 
-const todosSeed = [
+const testSeed = [
   {
     _id: new ObjectID(),
     title: 'Study Code',
@@ -33,7 +33,7 @@ const todosSeed = [
 //Run before each test case to setup our data environment
 beforeEach((done) => {
   Todo.remove({}).then(() => {
-    return Todo.insertMany(todosSeed);
+    return Todo.insertMany(testSeed);
   }).then(() => {
     done()
   })
@@ -60,11 +60,11 @@ describe('TODOS', () => {
 
     it('should retrieve a single todo with a valid ID', (done) => {
       request(app)
-        .get(`/todo/${todosSeed[0]._id.toHexString()}`)
+        .get(`/todo/${testSeed[0]._id.toHexString()}`)
         .expect(200)
         .expect((res) => {
           expect(res.body).toBeA('object')
-          expect(res.body.todo.title).toBe(todosSeed[0].title)
+          expect(res.body.todo.title).toBe(testSeed[0].title)
         })
         .end(done);
     })
@@ -87,7 +87,7 @@ describe('TODOS', () => {
 
   }); //End GET
 
-  describe('POST /todos', () => {
+  describe('POST /todo', () => {
 
   it('should create one new todo', (done) => {
     var testTodo = {
@@ -96,7 +96,7 @@ describe('TODOS', () => {
     };
 
     request(app)
-      .post('/todos')
+      .post('/todo')
       .send(testTodo)
       .expect(200)
       .expect((res) => {
@@ -120,7 +120,7 @@ describe('TODOS', () => {
   it('should not create todo with invalid body data', (done) => {
 
     request(app)
-      .post('/todos')
+      .post('/todo')
       .send({})
       .expect(400)
       .end((err, res) => {

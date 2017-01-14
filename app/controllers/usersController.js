@@ -3,7 +3,10 @@ const {ObjectID} = require('mongodb');
 
 module.exports = (app) => {
 
-  //GET
+
+  /* ------------ GET ------------ */
+
+  // All users
   app.get('/users', (req, res) => {
     users.find({}, (err, users) => {
       if(err) throw error;
@@ -14,9 +17,8 @@ module.exports = (app) => {
 
   })
 
-
+  //One user
   app.get('/user/:id', (req, res) => {
-
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }
@@ -31,12 +33,13 @@ module.exports = (app) => {
     }).catch((err) => {
       res.status(400).send()
     })
-
   })
 
 
-  //POST
-  app.post('/users', (req, res) => {
+  /* ------------ POST ------------ */
+
+  // Create new user
+  app.post('/user', (req, res) => {
 
     let newUser = users({
       userName: req.body.userName,
