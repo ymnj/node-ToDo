@@ -1,11 +1,13 @@
-const todos = require('../models/todoModel');
+const Todo = require('../models/todoModel');
 const {ObjectID} = require('mongodb');
 
 module.exports = (app) => {
   
-  //GET
+  /* ------------ GET ------------ */
+
+  //All todos
   app.get('/todos', (req, res) => {
-    todos.find().then((todos) => {
+    Todo.find().then((todos) => {
       res.send({
         todos
       })
@@ -14,14 +16,14 @@ module.exports = (app) => {
     })
   });
 
-
-  app.get('/todo/:id', function(req, res){
+  //Single todo
+  app.get('/todos/:id', function(req, res){
 
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }
  
-    todos.findById({
+    Todo.findById({
       _id: req.params.id
     }).then((todo) => {
       if(!todo) {
@@ -34,11 +36,10 @@ module.exports = (app) => {
   });
 
 
-
-  //POST
+  /* ------------ POST ------------ */
   app.post('/todo', (req, res) => {
     
-    let newTodo = todos({
+    let newTodo = Todo({
       title: req.body.title,
       description: req.body.description,
       isDone: req.body.isDone,
@@ -55,7 +56,22 @@ module.exports = (app) => {
 
   //UPDATE
 
-
-
   //DELETE
+  app.delete('/todos/:id', (req, res) => {
+    if(!ObjectID.isValid(req.params.id)){
+      return res.status(404).send();
+    }
+
+    Todo.findByIdAndRemove(req.params.id).then((todo) => {
+      if(!todo) {
+        return res.status(404).send();
+      }
+
+      res.send({todo})
+    }).catch((err) => {
+      res.status(400).send(err);
+    })
+  })
+
+
 }

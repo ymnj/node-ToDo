@@ -52,13 +52,10 @@ describe('USERS', () => {
         })
         .end(done);
     })
-  })
-
-  describe('GET /user', () => {
-
-      it('it should return a user with the valid ID', (done) => {
+  
+    it('it should return a user with the valid ID', (done) => {
         request(app)
-          .get(`/user/${testSeed[0]._id}`)
+          .get(`/users/${testSeed[0]._id}`)
           .expect(200)
           .expect((res) => {
             expect(res.body).toBeA('object')
@@ -69,51 +66,71 @@ describe('USERS', () => {
 
       it('should return 404 if user not found with valid ID', (done) => {
         request(app)
-          .get(`/user/${new ObjectID()}`)
+          .get(`/users/${new ObjectID()}`)
           .expect(404)
           .end(done)
       })
 
       it('should return 404 with non-object IDs', (done) => {
         request(app)
-          .get(`/user/fakeid`)
+          .get(`/users/fakeid`)
           .expect(404)
           .end(done)
       })
+  })
 
-    })
 
   describe('POST /user', () => {
 
-    it('should create a new user', (done) => {
-    var testUser = {
-      userName: "tommi",
-      firstName: "tom",
-      lastName: "hung",
-      email: "tom@test.ca"
-    }
+    it('should create a new user with valid data', (done) => {
+      var testUser = {
+        userName: "tommi",
+        firstName: "tom",
+        lastName: "hung",
+        email: "tom@test.ca"
+      }
 
-    request(app)
-      .post('/user')
-      .send(testUser)
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.userName).toBe(testUser.userName)
-      })
-      .end((err, res) => {
-        if(err){
-          return done(err)
-        }
+      request(app)
+        .post('/user')
+        .send(testUser)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.userName).toBe(testUser.userName)
+        })
+        .end((err, res) => {
+          if(err){
+            return done(err)
+          }
 
-        User.find().then((users) => {
-          expect(users.length).toBe(4);
-          expect(users[users.length - 1].userName).toBe(testUser.userName);
-          done();
-        }).catch((err) => {
-          done(err)
-        });
-      })
+          User.find().then((users) => {
+            expect(users.length).toBe(4);
+            expect(users[users.length - 1].userName).toBe(testUser.userName);
+            done();
+          }).catch((err) => {
+            done(err)
+          });
+        })
     })
+
+    it('should not create a new user with invalid data', (done) => {
+      request(app)
+        .post('/user')
+        .send({})
+        .expect(400)
+        .end((err, res) => {
+          if(err){
+            return done(err)
+          }
+
+          User.find().then((users) => {
+            expect(users.length).toBe(3);
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        })
+    })
+
   })// End POST
 
 }) // End describe

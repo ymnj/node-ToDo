@@ -54,13 +54,9 @@ describe('TODOS', () => {
         .end(done);
     })
 
-  })
-
-  describe('GET /todo', () => {
-
     it('should retrieve a single todo with a valid ID', (done) => {
       request(app)
-        .get(`/todo/${testSeed[0]._id.toHexString()}`)
+        .get(`/todos/${testSeed[0]._id.toHexString()}`)
         .expect(200)
         .expect((res) => {
           expect(res.body).toBeA('object')
@@ -70,17 +66,17 @@ describe('TODOS', () => {
     })
 
     it('should return a 404 if todo is not found with valid ID', (done) => {
-      var randomId = new ObjectID().toHexString();
+      let randomId = new ObjectID().toHexString();
 
       request(app)
-        .get(`/todo/${randomId}`)
+        .get(`/todos/${randomId}`)
         .expect(404)
         .end(done)
     })
 
     it('should return 404 for non-object ids', (done) => {
       request(app)
-        .get(`/todo/fakeid123`)
+        .get('/todos/fakeid123')
         .expect(404)
         .end(done)
     })
@@ -90,7 +86,7 @@ describe('TODOS', () => {
   describe('POST /todo', () => {
 
   it('should create one new todo', (done) => {
-    var testTodo = {
+    let testTodo = {
       title: "Test todo post",
       description: "Post a valid todo"
     };
@@ -137,6 +133,46 @@ describe('TODOS', () => {
       })
     })
   }); //End POST
+
+  describe('DELETE /todos', () => {
+
+    it('should delete a todo with valid objectID', (done) => {
+
+      let deleteID = testSeed[0]._id.toHexString();
+
+      request(app)
+        .delete(`/todos/${deleteID}`)
+        .expect(200)
+        .end((req, res) => {
+          Todo.find({}).then((todos) => {
+            expect(todos.length).toBe(testSeed.length - 1)
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        })
+    })
+
+    it('should return 404 with invalid objectID', (done) => {
+
+      let deleteID = new ObjectID().toHexString();
+
+      request(app)
+        .delete(`/todos/${deleteID}`)
+        .expect(404)
+        .end(done)
+    })
+
+    it('it should return 404 with non-object IDs', (done) => {
+
+      request(app)
+        .delete('/todos/fakeid123')
+        .expect(404)
+        .end(done)
+    })
+
+  }) //End DELETE
+
 
 });
 

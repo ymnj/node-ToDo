@@ -1,4 +1,4 @@
-const users = require('../models/userModel');
+const User = require('../models/userModel');
 const {ObjectID} = require('mongodb');
 
 module.exports = (app) => {
@@ -8,7 +8,7 @@ module.exports = (app) => {
 
   // All users
   app.get('/users', (req, res) => {
-    users.find({}, (err, users) => {
+    User.find({}, (err, users) => {
       if(err) throw error;
 
       res.status(200)
@@ -18,12 +18,12 @@ module.exports = (app) => {
   })
 
   //One user
-  app.get('/user/:id', (req, res) => {
+  app.get('/users/:id', (req, res) => {
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }
 
-    users.findById({
+    User.findById({
       _id: req.params.id
     }).then((user) => {
       if(!user){
@@ -41,7 +41,7 @@ module.exports = (app) => {
   // Create new user
   app.post('/user', (req, res) => {
 
-    let newUser = users({
+    let newUser = User({
       userName: req.body.userName,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
