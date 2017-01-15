@@ -160,7 +160,14 @@ describe('TODOS', () => {
       request(app)
         .delete(`/todos/${deleteID}`)
         .expect(404)
-        .end(done)
+        .end((req, res) => {
+          Todo.find().then((todos) => {
+            expect(todos.length).toBe(testSeed.length)
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        })
     })
 
     it('it should return 404 with non-object IDs', (done) => {
@@ -168,7 +175,14 @@ describe('TODOS', () => {
       request(app)
         .delete('/todos/fakeid123')
         .expect(404)
-        .end(done)
+        .end((req, res) => {
+          Todo.find().then((todos) => {
+            expect(todos.length).toBe(testSeed.length)
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        })
     })
 
   }) //End DELETE

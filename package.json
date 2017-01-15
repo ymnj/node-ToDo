@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/*.js",
-    "watch-test": "nodemon --exec 'npm test'"
+    "watch-test": "nodemon --exec 'npm test'",
+    "watch-app": "nodemon server/app.js --watch ./"
   },
   "repository": {
     "type": "git",

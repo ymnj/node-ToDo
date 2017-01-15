@@ -64,7 +64,7 @@ module.exports = (app) => {
 
     User.findByIdAndRemove(req.params.id).then((user) => {
       if(!user){
-        return req.status(404).send();
+        return req.status(404).send(user);
       }
 
       res.send({user})

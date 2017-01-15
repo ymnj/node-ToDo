@@ -133,6 +133,59 @@ describe('USERS', () => {
 
   })// End POST
 
+  describe('DELETE /users', () => {
+
+    it('should delete a user with a valid object ID', (done) => {
+
+      let deleteID = testSeed[0]._id.toHexString();
+
+      request(app)
+        .delete(`/users/${deleteID}`)
+        .expect(200)
+        .end((req, res) => {
+          User.find().then((users) => {
+            expect(users.length).toBe(testSeed.length - 1);
+            done();
+          }).catch((err) => {
+            done(err)
+          })
+        })
+    })
+
+    it('should return 404 with an invalid object ID', (done) => {
+
+      let deleteID = new ObjectID().toHexString();
+
+      request(app)
+        .delete('/users/deleteID')
+        .expect(404)
+        .end((req, res) => {
+          User.find().then((users) => {
+            expect(users.length).toBe(testSeed.length)
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        })
+    })
+
+    it('should return 404 with non-object ID', () => {
+
+      request(app)
+        .delete('/users/fake123')
+        .expect(404)
+        .end((req, res) => {
+          User.find().then((users) => {
+            expect(users.length).toBe(testSeed.length)
+            done();
+          }).catch((err) => {
+            done(err);
+          })
+        })
+    })
+
+  }) //End DELETE
+
 }) // End describe
 
 
