@@ -1,12 +1,12 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
-var mongoose = require('mongoose');
-var db = require('./db');
+const mongoose = require('mongoose');
+const db = require('./db');
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

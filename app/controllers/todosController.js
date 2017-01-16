@@ -1,5 +1,6 @@
 const Todo = require('../models/todoModel');
 const {ObjectID} = require('mongodb');
+const _ = require('lodash');
 
 module.exports = (app) => {
   
@@ -54,7 +55,37 @@ module.exports = (app) => {
   });
 
 
-  //UPDATE
+  /* ------------ UPDATE ------------ */
+
+  app.patch('/todos/:id', (req, res) => {
+
+    let updateId = req.params.id;
+    let params = _.pick(req.body, ['title', 'description', 'isDone', 'hasAttachment'])
+
+    if(!ObjectID.isValid(req.params.id)){
+      return res.status(404).send();
+    }
+
+    if(_.isBoolean(params.isDone) && params.isDone){
+      params.completedAt = new Date().getTime();
+    } else {
+      params.isDone = false;
+      params.completedAt = null;
+    }
+
+    Todo.findByIdAndUpdate(updateID, {$set: params}, {new: true}).then((todo) => {
+      if(!todo){
+        return res.status(404).send();
+      }
+
+      res.send({todo})
+
+    }).catch((err) => {
+      res.status(400).send()
+    })
+  });
+
+
 
   /* ------------ DELETE ------------ */
   app.delete('/todos/:id', (req, res) => {

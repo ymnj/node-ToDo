@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const {ObjectID} = require('mongodb');
+const _ = require('lodash');
 
 module.exports = (app) => {
 
@@ -55,6 +56,32 @@ module.exports = (app) => {
     })
   });
 
+  /* ------------ UPDATE ------------ */
+
+  app.patch('/users/:id', (req, res) => {
+
+    let updateID = req.params.id
+    let params = _.pick(req.body, ['userName', 'firstName', 'lastName', 'email'])
+
+    if(!ObjectID.isValid(updateID)){
+      res.status(404).send()
+    }
+
+    User.findByIdAndUpdate(updateID, {$set: params}, {new: true}).then((user) => {
+      if(!user) {
+        return res.status(404).send();
+      }
+
+      res.send({user})
+    }).catch((err) => {
+      req.status(404).send(err);
+    })
+
+  })
+
+
+
+
   /* ------------ DELETE ------------ */
 
   app.delete('/users/:id', (req, res) => {
@@ -64,7 +91,7 @@ module.exports = (app) => {
 
     User.findByIdAndRemove(req.params.id).then((user) => {
       if(!user){
-        return req.status(404).send(user);
+        return req.status(404).send();
       }
 
       res.send({user})
