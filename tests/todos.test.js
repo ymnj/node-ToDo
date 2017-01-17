@@ -9,13 +9,14 @@ const testSeed = [
   {
     _id: new ObjectID(),
     title: 'Study Code',
-    description: 'Node and React',
-    completedAt: 12
+    description: 'Node and React'
   },
   {
     _id: new ObjectID(),
     title: 'Play games',
-    description: 'Overwatch'
+    description: 'Overwatch',
+    completedAt: 2,
+    isDone: true
   },
   {
     _id: new ObjectID(),
@@ -133,6 +134,70 @@ describe('TODOS', () => {
       })
     })
   }); //End POST
+
+  describe('PATCH /todos', () => {
+
+    it('should update a todo with valid objectID', (done) => {
+
+      let updateId = testSeed[0]._id.toHexString();
+      let updatedParams = {
+        title: "updatedTitle",
+        description: "updatedDescription",
+        hasAttachment: true,
+        isDone: true
+      }
+
+      request(app)
+        .patch(`/todos/${updateId}`)
+        .send(updatedParams)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.todo.title).toBe(updatedParams.title)
+          expect(res.body.todo.description).toBe(updatedParams.description)
+          expect(res.body.todo.hasAttachment).toBe(updatedParams.hasAttachment)
+          expect(res.body.todo.completedAt).toBeA('number')
+        })
+        .end(done)
+    })
+
+    it('should clear completedAt if isDone is false', (done) => {
+
+      let updateId = testSeed[1]._id.toHexString();
+      let updatedParams = {
+        isDone: false
+      }
+
+      request(app)
+        .patch(`/todos/${updateId}`)
+        .send(updatedParams)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.todo.isDone).toBe(false);
+          expect(res.body.todo.completedAt).toNotExist();
+        })
+        .end(done)
+    })
+
+    it('should return 404 with non valid ObjectID', (done) => {
+
+      let updateId = new ObjectID().toHexString();
+
+      request(app)
+        .patch(`/todos/${updateId}`)
+        .expect(404)
+        .end(done)
+    })
+
+    it('should return 404 with a non ObjectID', (done) => {
+
+      request(app)
+        .patch('/todos/fake123')
+        .expect(404)
+        .end(done)
+    })
+
+  }) // End UPDATE
+
 
   describe('DELETE /todos', () => {
 

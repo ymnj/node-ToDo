@@ -73,7 +73,7 @@ module.exports = (app) => {
       params.completedAt = null;
     }
 
-    Todo.findByIdAndUpdate(updateID, {$set: params}, {new: true}).then((todo) => {
+    Todo.findByIdAndUpdate(updateId, {$set: params}, {new: true}).then((todo) => {
       if(!todo){
         return res.status(404).send();
       }

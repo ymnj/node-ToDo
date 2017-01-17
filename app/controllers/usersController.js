@@ -64,7 +64,7 @@ module.exports = (app) => {
     let params = _.pick(req.body, ['userName', 'firstName', 'lastName', 'email'])
 
     if(!ObjectID.isValid(updateID)){
-      res.status(404).send()
+      return res.status(404).send()
     }
 
     User.findByIdAndUpdate(updateID, {$set: params}, {new: true}).then((user) => {
@@ -74,11 +74,10 @@ module.exports = (app) => {
 
       res.send({user})
     }).catch((err) => {
-      req.status(404).send(err);
+      res.status(400).send(err);
     })
 
   })
-
 
 
 

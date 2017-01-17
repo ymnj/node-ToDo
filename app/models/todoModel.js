@@ -15,7 +15,7 @@ let todoSchema = new Schema({
     trim: true
   },
   isDone: {
-    type: String,
+    type: Boolean,
     default: false
   },
   hasAttachment: {

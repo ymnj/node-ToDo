@@ -133,6 +133,13 @@ describe('USERS', () => {
 
   })// End POST
 
+
+  describe('PATCH /users', () => {
+
+
+
+  }) //End PATCH
+
   describe('DELETE /users', () => {
 
     it('should delete a user with a valid object ID', (done) => {
