@@ -136,6 +136,47 @@ describe('USERS', () => {
 
   describe('PATCH /users', () => {
 
+    it('should update a user with valid ObjectID', (done) => {
+
+      let updateId = testSeed[2]._id.toHexString();
+      let params = {
+        userName: "testuserName",
+        firstName: "firstTest",
+        lastName: "lastTest",
+        email: "updatetest@test.ca"
+      }
+
+      request(app)
+        .patch(`/users/${updateId}`)
+        .send(params)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.user.userName).toBe(params.userName)
+          expect(res.body.user.firstName).toBe(params.firstName)
+          expect(res.body.user.lastName).toBe(params.lastName)
+          expect(res.body.user.email).toBe(params.email)
+        })
+        .end(done)
+    });
+
+    it('should return a 404 with invalid ObjectId', (done) => {
+
+      let = updateId = new ObjectID().toHexString();
+
+      request(app)
+        .patch(`/users/${updateId}`)
+        .expect(404)
+        .end(done)
+    });
+
+    it('should return a 400 with a non ObjectID', (done) => {
+
+      request(app)
+        .patch('/users/fake123')
+        .expect(404)
+        .end(done)
+    });
+
 
 
   }) //End PATCH
