@@ -39,14 +39,10 @@ module.exports = (app) => {
 
   /* ------------ POST ------------ */
   app.post('/todo', (req, res) => {
+
+    let params = _pick(req.body, ['title', 'description', 'hasAttachment'])
     
-    let newTodo = Todo({
-      title: req.body.title,
-      description: req.body.description,
-      isDone: req.body.isDone,
-      hasAttachment: req.body.hasAttachment,
-      completedAt: req.body.completedAt
-    });
+    let newTodo = new Todo(params);
     newTodo.save().then((todo) => {
       res.send(todo);
     }).catch((err) => {

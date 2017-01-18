@@ -42,26 +42,26 @@ module.exports = (app) => {
   // Create new user
   app.post('/user', (req, res) => {
 
-    let newUser = User({
-      userName: req.body.userName,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email
-    });
+    let params = _.pick(req.body, ['userName', 'password', 'firstName', 'lastName', 'email'])
 
-    newUser.save().then((user) => {
-      res.send(user);
+    let newUser = new User(params);
+
+    newUser.save().then(() => {
+      return newUser.generateAuthToken();
+    }).then((token) => {
+      res.header('x-auth', token).send(newUser)
     }).catch((err) => {
       res.status(400).send(err);
     })
   });
+
 
   /* ------------ UPDATE ------------ */
 
   app.patch('/users/:id', (req, res) => {
 
     let updateID = req.params.id
-    let params = _.pick(req.body, ['userName', 'firstName', 'lastName', 'email'])
+    let params = _.pick(req.body, ['userName', 'password', 'firstName', 'lastName', 'email'])
 
     if(!ObjectID.isValid(updateID)){
       return res.status(404).send()

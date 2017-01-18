@@ -174,7 +174,7 @@ describe('TODOS', () => {
         .expect((res) => {
           expect(res.body.todo.isDone).toBe(false);
           expect(res.body.todo.completedAt).toNotExist();
-        })
+        }) 
         .end(done)
     })
 
