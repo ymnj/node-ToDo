@@ -53,7 +53,7 @@ module.exports = (app) => {
 
   /* ------------ UPDATE ------------ */
 
-  app.patch('/todos/:id', (req, res) => {
+  app.patch('/todo/:id', (req, res) => {
 
     let updateId = req.params.id;
     let params = _.pick(req.body, ['title', 'description', 'isDone', 'hasAttachment'])
@@ -84,7 +84,7 @@ module.exports = (app) => {
 
 
   /* ------------ DELETE ------------ */
-  app.delete('/todos/:id', (req, res) => {
+  app.delete('/todo/:id', (req, res) => {
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }

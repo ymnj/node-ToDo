@@ -19,7 +19,7 @@ module.exports = (app) => {
   })
 
   //One user
-  app.get('/users/:id', (req, res) => {
+  app.get('/user/:id', (req, res) => {
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }
@@ -33,6 +33,21 @@ module.exports = (app) => {
       res.send({user})
     }).catch((err) => {
       res.status(400).send()
+    })
+  })
+
+  //TEST
+  app.get('/users/me', (req, res) => {
+    
+    let token = req.header('x-auth');
+
+    User.findByToken(token).then((user) => {
+      if(!user){
+        return Promise.reject()
+      }
+      res.send(user);
+    }).catch((err) => {
+      res.status(401).send()
     })
   })
 
@@ -50,6 +65,7 @@ module.exports = (app) => {
       return newUser.generateAuthToken();
     }).then((token) => {
       res.header('x-auth', token).send(newUser)
+      console.log(req.body);
     }).catch((err) => {
       res.status(400).send(err);
     })
@@ -58,7 +74,7 @@ module.exports = (app) => {
 
   /* ------------ UPDATE ------------ */
 
-  app.patch('/users/:id', (req, res) => {
+  app.patch('/user/:id', (req, res) => {
 
     let updateID = req.params.id
     let params = _.pick(req.body, ['userName', 'password', 'firstName', 'lastName', 'email'])
@@ -80,10 +96,9 @@ module.exports = (app) => {
   })
 
 
-
   /* ------------ DELETE ------------ */
 
-  app.delete('/users/:id', (req, res) => {
+  app.delete('/user/:id', (req, res) => {
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }

@@ -55,6 +55,7 @@ let userSchema = new Schema({
 });
 
 //Determines what gets sent back when a mongoose model is converted to JSON value
+//.methods are instance methods
 userSchema.methods.toJSON = function () {
   let user = this;
   let userObject = user.toObject();
@@ -73,6 +74,24 @@ userSchema.methods.generateAuthToken =  function (){
     return token;
   });
 };
+
+// .static are model methods
+userSchema.statics.findByToken = function(token) {
+  var User = this;
+  var decoded;
+
+  try {
+    decoded = jwt.verify(token, 'testsecret');
+  } catch (e) {
+    return Promise.reject();
+  }
+
+  return User.findOne({
+    '_id': decoded._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  });
+}
 
 let User = mongoose.model('User', userSchema);
 
