@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
+const authenticate = require('../../middleware/authenticate');
 
 module.exports = (app) => {
 
@@ -37,18 +38,8 @@ module.exports = (app) => {
   })
 
   //TEST
-  app.get('/users/me', (req, res) => {
-    
-    let token = req.header('x-auth');
-
-    User.findByToken(token).then((user) => {
-      if(!user){
-        return Promise.reject()
-      }
-      res.send(user);
-    }).catch((err) => {
-      res.status(401).send()
-    })
+  app.get('/users/me', authenticate, (req, res) => { 
+    res.send(req.user)
   })
 
 
@@ -65,7 +56,6 @@ module.exports = (app) => {
       return newUser.generateAuthToken();
     }).then((token) => {
       res.header('x-auth', token).send(newUser)
-      console.log(req.body);
     }).catch((err) => {
       res.status(400).send(err);
     })

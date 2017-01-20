@@ -64,20 +64,18 @@ userSchema.methods.toJSON = function () {
 }
 
 userSchema.methods.generateAuthToken =  function (){
-  let user = this;
   let access = 'auth';
-  let token = jwt.sign({_id: user._id.toHexString(), access}, 'testsecret').toString();
+  let token = jwt.sign({_id: this._id.toHexString(), access}, 'testsecret').toString();
 
-  user.tokens.push({access, token});
+  this.tokens.push({access, token});
 
-  return user.save().then(() => {
+  return this.save().then(() => {
     return token;
   });
 };
 
 // .static are model methods
 userSchema.statics.findByToken = function(token) {
-  var User = this;
   var decoded;
 
   try {
@@ -86,7 +84,7 @@ userSchema.statics.findByToken = function(token) {
     return Promise.reject();
   }
 
-  return User.findOne({
+  return this.findOne({
     '_id': decoded._id,
     'tokens.token': token,
     'tokens.access': 'auth'
