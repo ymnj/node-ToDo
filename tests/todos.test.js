@@ -4,41 +4,11 @@ const {ObjectID} = require('mongodb');
 
 const app = require('../server/app');
 const Todo = require('../app/models/todoModel');
+const {todosSeed, populateTodos} = require('./seed/seed');
 
-const testSeed = [
-  {
-    _id: new ObjectID(),
-    title: 'Study Code',
-    description: 'Node and React'
-  },
-  {
-    _id: new ObjectID(),
-    title: 'Play games',
-    description: 'Overwatch',
-    completedAt: 2,
-    isDone: true
-  },
-  {
-    _id: new ObjectID(),
-    title: 'Cook',
-    description: 'Friend chicken',
-    completedAt: 2
-  },
-  {
-    _id: new ObjectID(),
-    title: 'Work out',
-    description: 'Go to the gym',
-    completedAt: 12
-  }];
 
 //Run before each test case to setup our data environment
-beforeEach((done) => {
-  Todo.remove({}).then(() => {
-    return Todo.insertMany(testSeed);
-  }).then(() => {
-    done()
-  })
-});
+beforeEach(populateTodos);
 
 describe('TODOS', () => {
 
@@ -57,11 +27,11 @@ describe('TODOS', () => {
 
     it('should retrieve a single todo with a valid ID', (done) => {
       request(app)
-        .get(`/todos/${testSeed[0]._id.toHexString()}`)
+        .get(`/todos/${todosSeed[0]._id.toHexString()}`)
         .expect(200)
         .expect((res) => {
           expect(res.body).toBeA('object')
-          expect(res.body.todo.title).toBe(testSeed[0].title)
+          expect(res.body.todo.title).toBe(todosSeed[0].title)
         })
         .end(done);
     })
@@ -139,7 +109,7 @@ describe('TODOS', () => {
 
     it('should update a todo with valid objectID', (done) => {
 
-      let updateId = testSeed[0]._id.toHexString();
+      let updateId = todosSeed[0]._id.toHexString();
       let updatedParams = {
         title: "updatedTitle",
         description: "updatedDescription",
@@ -162,7 +132,7 @@ describe('TODOS', () => {
 
     it('should clear completedAt if isDone is false', (done) => {
 
-      let updateId = testSeed[1]._id.toHexString();
+      let updateId = todosSeed[1]._id.toHexString();
       let updatedParams = {
         isDone: false
       }
@@ -203,14 +173,14 @@ describe('TODOS', () => {
 
     it('should delete a todo with valid objectID', (done) => {
 
-      let deleteID = testSeed[0]._id.toHexString();
+      let deleteID = todosSeed[0]._id.toHexString();
 
       request(app)
         .delete(`/todo/${deleteID}`)
         .expect(200)
         .end((req, res) => {
           Todo.find({}).then((todos) => {
-            expect(todos.length).toBe(testSeed.length - 1)
+            expect(todos.length).toBe(todosSeed.length - 1)
             done();
           }).catch((err) => {
             done(err);
@@ -227,7 +197,7 @@ describe('TODOS', () => {
         .expect(404)
         .end((req, res) => {
           Todo.find().then((todos) => {
-            expect(todos.length).toBe(testSeed.length)
+            expect(todos.length).toBe(todosSeed.length)
             done();
           }).catch((err) => {
             done(err);
@@ -242,7 +212,7 @@ describe('TODOS', () => {
         .expect(404)
         .end((req, res) => {
           Todo.find().then((todos) => {
-            expect(todos.length).toBe(testSeed.length)
+            expect(todos.length).toBe(todosSeed.length)
             done();
           }).catch((err) => {
             done(err);

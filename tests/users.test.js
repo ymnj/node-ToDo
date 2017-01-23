@@ -4,43 +4,11 @@ const {ObjectID} = require('mongodb');
 
 const app = require('../server/app');
 const User = require('../app/models/userModel');
+const { usersSeed, populateUsers } = require('./seed/seed');
 
-
-let testSeed = [
-  {
-    _id: new ObjectID(),
-    userName: 'testUser',
-    firstName: 'Test',
-    lastName: 'User',
-    password: 'testPass',
-    email: 'test@test.ca'
-  },
-  {
-    _id: new ObjectID(),
-    userName: 'secondUser',
-    firstName: 'Second',
-    lastName: 'Tester',
-    password: 'testPass',
-    email: 'testTwo@test.ca' 
-  },
-  {
-    _id: new ObjectID(),
-    userName: 'seedUser',
-    firstName: 'Seed',
-    lastName: 'User',
-    password: 'testPass',
-    email: 'testSeed@test.ca' 
-  }
-] 
 
 //Run before each test case to setup our data environment
-beforeEach((done) => {
-  User.remove({}).then(() => {
-    return User.insertMany(testSeed)
-  }).then(() => {
-    done();
-  })
-});
+beforeEach(populateUsers);
 
 describe('USERS', () => {
 
@@ -58,11 +26,11 @@ describe('USERS', () => {
   
     it('it should return a user with the valid ID', (done) => {
         request(app)
-          .get(`/users/${testSeed[0]._id}`)
+          .get(`/users/${usersSeed[0]._id}`)
           .expect(200)
           .expect((res) => {
             expect(res.body).toBeA('object')
-            expect(res.body.user.userName).toBe(testSeed[0].userName)
+            expect(res.body.user.userName).toBe(usersSeed[0].userName)
           })
           .end(done)
       })
@@ -142,7 +110,7 @@ describe('USERS', () => {
 
     it('should update a user with valid ObjectID', (done) => {
 
-      let updateId = testSeed[2]._id.toHexString();
+      let updateId = usersSeed[2]._id.toHexString();
       let params = {
         userName: "testuserName",
         firstName: "firstTest",
@@ -189,14 +157,14 @@ describe('USERS', () => {
 
     it('should delete a user with a valid object ID', (done) => {
 
-      let deleteID = testSeed[0]._id.toHexString();
+      let deleteID = usersSeed[0]._id.toHexString();
 
       request(app)
         .delete(`/user/${deleteID}`)
         .expect(200)
         .end((req, res) => {
           User.find().then((users) => {
-            expect(users.length).toBe(testSeed.length - 1);
+            expect(users.length).toBe(usersSeed.length - 1);
             done();
           }).catch((err) => {
             done(err)
@@ -213,7 +181,7 @@ describe('USERS', () => {
         .expect(404)
         .end((req, res) => {
           User.find().then((users) => {
-            expect(users.length).toBe(testSeed.length)
+            expect(users.length).toBe(usersSeed.length)
             done();
           }).catch((err) => {
             done(err);
@@ -221,14 +189,14 @@ describe('USERS', () => {
         })
     })
 
-    it('should return 404 with non-object ID', () => {
+    it('should return 404 with non-object ID', (done) => {
 
       request(app)
         .delete('/users/fake123')
         .expect(404)
         .end((req, res) => {
           User.find().then((users) => {
-            expect(users.length).toBe(testSeed.length)
+            expect(users.length).toBe(usersSeed.length)
             done();
           }).catch((err) => {
             done(err);
