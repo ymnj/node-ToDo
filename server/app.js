@@ -4,7 +4,6 @@ const express = require('express');
 const app = express();
 
 const mongoose = require('mongoose');
-const db = require('./db');
 
 const port = process.env.PORT;
 
@@ -25,7 +24,7 @@ app.get('/', function(req, res){
 
 //Database Connections
 mongoose.Promise = global.Promise;
-mongoose.connect(db.getDbConnectionString());
+mongoose.connect(process.env.MONGODB_URI);
 
 //SEED
 var seedController = require('./seed');

@@ -28,9 +28,9 @@ let todoSchema = new Schema({
   }
 });
 
-todoSchema.methods.generateAuthToken =  function (){
-  var user = this;
-};
+// todoSchema.methods.generateAuthToken =  function (){
+//   var user = this;
+// };
 
 let Todo = mongoose.model('ToDo', todoSchema);
 

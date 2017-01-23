@@ -40,7 +40,7 @@ module.exports = (app) => {
   /* ------------ POST ------------ */
   app.post('/todo', (req, res) => {
 
-    let params = _pick(req.body, ['title', 'description', 'hasAttachment'])
+    let params = _.pick(req.body, ['title', 'description', 'hasAttachment'])
     
     let newTodo = new Todo(params);
     newTodo.save().then((todo) => {
@@ -99,6 +99,4 @@ module.exports = (app) => {
       res.status(400).send(err);
     })
   })
-
-
 }

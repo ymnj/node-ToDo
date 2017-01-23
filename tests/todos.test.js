@@ -148,7 +148,7 @@ describe('TODOS', () => {
       }
 
       request(app)
-        .patch(`/todos/${updateId}`)
+        .patch(`/todo/${updateId}`)
         .send(updatedParams)
         .expect(200)
         .expect((res) => {
@@ -168,7 +168,7 @@ describe('TODOS', () => {
       }
 
       request(app)
-        .patch(`/todos/${updateId}`)
+        .patch(`/todo/${updateId}`)
         .send(updatedParams)
         .expect(200)
         .expect((res) => {
@@ -183,7 +183,7 @@ describe('TODOS', () => {
       let updateId = new ObjectID().toHexString();
 
       request(app)
-        .patch(`/todos/${updateId}`)
+        .patch(`/todo/${updateId}`)
         .expect(404)
         .end(done)
     })
@@ -191,7 +191,7 @@ describe('TODOS', () => {
     it('should return 404 with a non ObjectID', (done) => {
 
       request(app)
-        .patch('/todos/fake123')
+        .patch('/todo/fake123')
         .expect(404)
         .end(done)
     })
@@ -206,7 +206,7 @@ describe('TODOS', () => {
       let deleteID = testSeed[0]._id.toHexString();
 
       request(app)
-        .delete(`/todos/${deleteID}`)
+        .delete(`/todo/${deleteID}`)
         .expect(200)
         .end((req, res) => {
           Todo.find({}).then((todos) => {

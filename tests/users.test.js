@@ -12,6 +12,7 @@ let testSeed = [
     userName: 'testUser',
     firstName: 'Test',
     lastName: 'User',
+    password: 'testPass',
     email: 'test@test.ca'
   },
   {
@@ -19,6 +20,7 @@ let testSeed = [
     userName: 'secondUser',
     firstName: 'Second',
     lastName: 'Tester',
+    password: 'testPass',
     email: 'testTwo@test.ca' 
   },
   {
@@ -26,6 +28,7 @@ let testSeed = [
     userName: 'seedUser',
     firstName: 'Seed',
     lastName: 'User',
+    password: 'testPass',
     email: 'testSeed@test.ca' 
   }
 ] 
@@ -87,6 +90,7 @@ describe('USERS', () => {
         userName: "tommi",
         firstName: "tom",
         lastName: "hung",
+        password: "testPass",
         email: "tom@test.ca"
       }
 
@@ -147,7 +151,7 @@ describe('USERS', () => {
       }
 
       request(app)
-        .patch(`/users/${updateId}`)
+        .patch(`/user/${updateId}`)
         .send(params)
         .expect(200)
         .expect((res) => {
@@ -172,7 +176,7 @@ describe('USERS', () => {
     it('should return a 400 with a non ObjectID', (done) => {
 
       request(app)
-        .patch('/users/fake123')
+        .patch('/user/fake123')
         .expect(404)
         .end(done)
     });
@@ -188,7 +192,7 @@ describe('USERS', () => {
       let deleteID = testSeed[0]._id.toHexString();
 
       request(app)
-        .delete(`/users/${deleteID}`)
+        .delete(`/user/${deleteID}`)
         .expect(200)
         .end((req, res) => {
           User.find().then((users) => {

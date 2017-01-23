@@ -20,20 +20,20 @@ module.exports = (app) => {
   })
 
   //One user
-  app.get('/user/:id', (req, res) => {
+  app.get('/users/:id', (req, res) => {
     if(!ObjectID.isValid(req.params.id)){
-      return res.status(404).send();
+      return res.status(404).send('c');
     }
 
     User.findById({
       _id: req.params.id
     }).then((user) => {
       if(!user){
-        res.status(404).send()
-      }
+        res.status(404).send('a')
+      } 
       res.send({user})
     }).catch((err) => {
-      res.status(400).send()
+      res.status(400).send('b')
     })
   })
 
