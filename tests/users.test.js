@@ -50,6 +50,32 @@ describe('USERS', () => {
       })
   })
 
+  describe('GET /test/me', () => {
+
+    it('should return a user with valid auth', (done) => {
+      request(app)
+        .get('/test/me')
+        .set('x-auth', usersSeed[0].tokens[0].token)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body._id).toBe(usersSeed[0]._id.toHexString())
+          expect(res.body.email).toBe(usersSeed[0].email)
+        })
+        .end(done)
+    });
+
+    it('should return 401 if invalid auth', (done) => {
+      request(app)
+        .get('/test/me')
+        .expect(401)
+        .expect((res) => {
+          expect(res.body).toEqual({})
+        })
+        .end(done)
+    });
+
+  })
+
 
   describe('POST /user', () => {
 

@@ -38,7 +38,7 @@ module.exports = (app) => {
   })
 
   //TEST
-  app.get('/users/me', authenticate, (req, res) => { 
+  app.get('/test/me', authenticate, (req, res) => { 
     res.send(req.user)
   })
 
