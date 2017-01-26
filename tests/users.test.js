@@ -151,6 +151,67 @@ describe('USERS', () => {
         .end(done)
     })
 
+    describe('/POST /users/login', () => {
+
+      it('should login a user and return auth token', (done) => { 
+
+        let testUser = {
+          email: usersSeed[2].email,
+          password: usersSeed[2].password
+        }
+
+        request(app)
+          .post('/users/login')
+          .send(testUser)
+          .expect(200)
+          .expect((res) => {
+            expect(res.header['x-auth']).toExist();
+          })
+          .end((err, res) => {
+            if(err){
+              return done(err)
+            }
+
+            User.findById(usersSeed[2]._id).then((user) => {
+              expect(user.tokens[0]).toInclude({
+                access: 'auth',
+                token: res.headers['x-auth']
+              });
+              done();
+            }).catch((err) => {
+              done(err)
+            })
+          });
+      })
+
+      it('should reject invalid login', (done) => {
+        
+        request(app)
+          .post('/users/login')
+          .send({
+            email: usersSeed[2].email,
+            password: usersSeed[2].password + 'extra'
+          })
+          .expect(400)
+          .expect((res) => {
+            expect(res.header['x-auth']).toNotExist()
+          })
+          .end((err, res) => {
+            if(err){
+              return done(err)
+            }
+
+            User.findById(usersSeed[2]._id).then((user) => {
+              expect(user.tokens.length).toBe(0)
+              done()
+            }).catch((err) => {
+              done(err)
+            })          
+          })
+      })  
+
+    })
+
   })// End POST
 
 
