@@ -62,6 +62,20 @@ module.exports = (app) => {
   });
 
 
+  app.post('/users/login', (req, res) => {
+
+    let params = _.pick(req.body, ['email', 'password'])
+
+    User.findByCredentials(params.email, params.password).then((user) => {
+      user.generateAuthToken().then((token) => {
+        res.header('x-auth', token).send(user);
+      });
+    }).catch((e) => {
+      res.status(400).send();
+    })
+  })
+
+
   /* ------------ UPDATE ------------ */
 
   app.patch('/user/:id', (req, res) => {

@@ -80,7 +80,7 @@ describe('USERS', () => {
   describe('POST /user', () => {
 
     it('should create a new user with valid data', (done) => {
-      var testUser = {
+      let testUser = {
         userName: "tommi",
         firstName: "tom",
         lastName: "hung",
@@ -94,6 +94,9 @@ describe('USERS', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body.userName).toBe(testUser.userName)
+          expect(res.body.email).toBe(testUser.email)
+          expect(res.body._id).toExist()
+          expect(res.headers['x-auth']).toExist()
         })
         .end((err, res) => {
           if(err){
@@ -103,12 +106,14 @@ describe('USERS', () => {
           User.find().then((users) => {
             expect(users.length).toBe(4);
             expect(users[users.length - 1].userName).toBe(testUser.userName);
+            expect(users[users.length - 1].password).toNotBe(testUser.password)
             done();
           }).catch((err) => {
             done(err)
           });
         })
     })
+
 
     it('should not create a new user with invalid data', (done) => {
       request(app)
@@ -127,6 +132,23 @@ describe('USERS', () => {
             done(err);
           })
         })
+    })
+
+    it('should not create a new user with a duplicate email', (done) => {
+
+      let testUserWithSameEmail = {
+        userName: "tommi",
+        firstName: "tom",
+        lastName: "hung",
+        password: "testPass",
+        email: "test@test.ca"
+      }
+
+      request(app)
+        .post('/user')
+        .send(testUserWithSameEmail)
+        .expect(400)
+        .end(done)
     })
 
   })// End POST

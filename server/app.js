@@ -26,10 +26,6 @@ app.get('/', function(req, res){
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
-//SEED
-var seedController = require('./seed');
-seedController(app);
-
 //Controllers
 var todosController = require('../app/controllers/todosController');
 todosController(app);
