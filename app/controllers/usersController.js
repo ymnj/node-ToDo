@@ -102,21 +102,29 @@ module.exports = (app) => {
 
   /* ------------ DELETE ------------ */
 
-  app.delete('/user/:id', (req, res) => {
-    if(!ObjectID.isValid(req.params.id)){
-      return res.status(404).send();
-    }
-
-    User.findByIdAndRemove(req.params.id).then((user) => {
-      if(!user){
-        return req.status(404).send();
-      }
-
-      res.send({user})
-    }).catch((err) => {
-      res.status(400).send(err);
+  app.delete('/users/me/token', authenticate, (req, res) => {
+    req.user.removeToken(req.token).then(() => {
+      res.status(200).send();
+    }).catch(() => {
+      res.status(400).send();
     })
-
   })
+
+  // app.delete('/user/:id', (req, res) => {
+  //   if(!ObjectID.isValid(req.params.id)){
+  //     return res.status(404).send();
+  //   }
+
+  //   User.findByIdAndRemove(req.params.id).then((user) => {
+  //     if(!user){
+  //       return req.status(404).send();
+  //     }
+
+  //     res.send({user})
+  //   }).catch((err) => {
+  //     res.status(400).send(err);
+  //   })
+
+  // })
 
 }
