@@ -313,6 +313,27 @@ describe('USERS', () => {
         })
     })
 
+    describe('DELETE /users/logout', () => {
+
+      it('should remove auth token on log out', (done) => {
+        request(app)
+          .delete('/users/logout')
+          .set('x-auth', usersSeed[0].tokens[0].token)
+          .expect(200)
+          .end((err, res) => {
+            if(err){
+              return done(err);
+            }
+            User.findById(usersSeed[0]._id).then((user) => {
+              expect(user.tokens.length).toBe(0)
+              done();
+            }).catch((err) => {
+              done(err);
+            })
+          })
+      })
+    })
+
   }) //End DELETE
 
 }) // End describe
