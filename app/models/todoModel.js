@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let todoSchema = new Schema({
+  _creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
   title: {
     type: String,
     required: [true, "Must include a title"],
@@ -28,9 +32,6 @@ let todoSchema = new Schema({
   }
 });
 
-// todoSchema.methods.generateAuthToken =  function (){
-//   var user = this;
-// };
 
 let Todo = mongoose.model('ToDo', todoSchema);
 

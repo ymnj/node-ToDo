@@ -2,13 +2,15 @@ const Todo = require('../models/todoModel');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 
+const authenticate = require('../../middleware/authenticate');
+
 module.exports = (app) => {
   
   /* ------------ GET ------------ */
 
   //All todos
   app.get('/todos', (req, res) => {
-    Todo.find().then((todos) => {
+    Todo.find({}).then((todos) => {
       res.send({
         todos
       })
@@ -17,15 +19,29 @@ module.exports = (app) => {
     })
   });
 
+  app.get('/todos/user', authenticate, (req, res) => {
+    Todo.find({
+      _creator: req.user._id
+    }).then((todos) => {
+      res.send({
+        todos
+      })
+    }).catch((err) => {
+      res.status(400).send(err);
+    })
+  });
+
+
   //Single todo
-  app.get('/todos/:id', function(req, res){
+  app.get('/todos/:id', authenticate, function(req, res){
 
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }
  
-    Todo.findById({
-      _id: req.params.id
+    Todo.findOne({
+      _id: req.params.id,
+      _creator: req.user._id
     }).then((todo) => {
       if(!todo) {
         return res.status(404).send();
@@ -38,9 +54,10 @@ module.exports = (app) => {
 
 
   /* ------------ POST ------------ */
-  app.post('/todo', (req, res) => {
+  app.post('/todo', authenticate, (req, res) => {
 
-    let params = _.pick(req.body, ['title', 'description', 'hasAttachment'])
+    let params = _.pick(req.body, ['title', 'description', 'hasAttachment']);
+    params._creator = req.user._id;
     
     let newTodo = new Todo(params);
     newTodo.save().then((todo) => {
@@ -53,7 +70,7 @@ module.exports = (app) => {
 
   /* ------------ UPDATE ------------ */
 
-  app.patch('/todo/:id', (req, res) => {
+  app.patch('/todo/:id', authenticate, (req, res) => {
 
     let updateId = req.params.id;
     let params = _.pick(req.body, ['title', 'description', 'isDone', 'hasAttachment'])
@@ -69,7 +86,10 @@ module.exports = (app) => {
       params.completedAt = null;
     }
 
-    Todo.findByIdAndUpdate(updateId, {$set: params}, {new: true}).then((todo) => {
+    Todo.findOneAndUpdate({
+      _id: updateId,
+      _creator: req.user._id
+    }, {$set: params}, {new: true}).then((todo) => {
       if(!todo){
         return res.status(404).send();
       }
@@ -84,12 +104,15 @@ module.exports = (app) => {
 
 
   /* ------------ DELETE ------------ */
-  app.delete('/todo/:id', (req, res) => {
+  app.delete('/todo/:id', authenticate, (req, res) => {
     if(!ObjectID.isValid(req.params.id)){
       return res.status(404).send();
     }
 
-    Todo.findByIdAndRemove(req.params.id).then((todo) => {
+    Todo.findOneAndRemove({
+      _id: req.params.id,
+      _creator: req.user._id
+    }).then((todo) => {
       if(!todo) {
         return res.status(404).send();
       }

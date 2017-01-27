@@ -11,7 +11,7 @@ const testUserThree = new ObjectID();
 const usersSeed = [
   {
     _id: testUserOne,
-    userName: 'testUser',
+    userName: 'testUserOne',
     firstName: 'Test',
     lastName: 'User',
     password: 'testPass',
@@ -23,7 +23,7 @@ const usersSeed = [
   },
   {
     _id: testUserTwo,
-    userName: 'secondUser',
+    userName: 'testUserTwo',
     firstName: 'Second',
     lastName: 'Tester',
     password: 'testPass',
@@ -35,7 +35,7 @@ const usersSeed = [
   },
   {
     _id: testUserThree,
-    userName: 'seedUser',
+    userName: 'testUserThree',
     firstName: 'Seed',
     lastName: 'User',
     password: 'testPass',
@@ -59,11 +59,13 @@ const populateUsers = (done) => {
 
 const todosSeed = [
   {
+    _creator: testUserOne,
     _id: new ObjectID(),
     title: 'Study Code',
     description: 'Node and React'
   },
   {
+    _creator: testUserOne,
     _id: new ObjectID(),
     title: 'Play games',
     description: 'Overwatch',
@@ -71,12 +73,14 @@ const todosSeed = [
     isDone: true
   },
   {
+    _creator: testUserTwo,
     _id: new ObjectID(),
     title: 'Cook',
     description: 'Friend chicken',
     completedAt: 2
   },
   {
+    _creator: testUserThree,
     _id: new ObjectID(),
     title: 'Work out',
     description: 'Go to the gym',
