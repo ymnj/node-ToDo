@@ -18,7 +18,7 @@ const usersSeed = [
     email: 'test@test.ca',
     tokens: [{
       access: "auth",
-      token: jwt.sign({_id: testUserOne, access: 'auth'}, 'testsecret').toString()
+      token: jwt.sign({_id: testUserOne, access: 'auth'}, process.env.JWT_SECRET).toString()
     }]
   },
   {
@@ -30,7 +30,7 @@ const usersSeed = [
     email: 'testTwo@test.ca',
     tokens: [{
       access: "auth",
-      token: jwt.sign({_id: testUserTwo, access: 'auth'}, 'testsecret').toString()
+      token: jwt.sign({_id: testUserTwo, access: 'auth'}, process.env.JWT_SECRET).toString()
     }] 
   },
   {
