@@ -4,10 +4,14 @@
   "description": "Node Express ToDo program",
   "main": "index.js",
   "scripts": {
+    "start": "node server/app.js",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha tests/*.js",
     "watch-test": "nodemon --exec 'npm test'",
     "watch-app": "nodemon server/app.js --watch ./"
   },
+  "engines": {
+    "node": "6.9.2"
+  }
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ymnj/plans.git"
