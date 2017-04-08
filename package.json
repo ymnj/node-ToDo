@@ -9,12 +9,12 @@
     "watch-test": "nodemon --exec 'npm test'",
     "watch-app": "nodemon server/app.js --watch ./"
   },
-  "engines": {
-    "node": "6.9.2"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ymnj/plans.git"
+  },
+  "engines": {
+    "node": "6.9.2"
   },
   "author": "Tom Hung",
   "license": "ISC",

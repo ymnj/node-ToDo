@@ -24,7 +24,7 @@ app.get('/', function(req, res){
 
 //Database Connections
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Plans');
+mongoose.connect(process.env.MONGODB_URI);
 
 //Controllers
 var todosController = require('../app/controllers/todosController');
