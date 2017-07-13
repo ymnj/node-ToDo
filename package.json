@@ -14,7 +14,7 @@
     "url": "git+https://github.com/ymnj/plans.git"
   },
   "engines": {
-    "node": "6.9.2"
+    "node": "6.11.1"
   },
   "author": "Tom Hung",
   "license": "ISC",
